@@ -1,7 +1,3 @@
-# Universidade Católica de Brasília – UCB  
-**Algoritmos e Programação Estruturada – APE**  
-**1° Semestre de 2025**  
-
 # Análise de dados de processos da justiça eleitoral do Distrito Federal
 
 A resolução desta tarefa deverá ser postada no AVA até às 23h59min do dia 11 de abril de 2025.
