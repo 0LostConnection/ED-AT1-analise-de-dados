@@ -60,7 +60,7 @@ time_t converterData(const char *data_str) {
     strncpy(data_copia, data_str, sizeof(data_copia) - 1);
     data_copia[sizeof(data_copia) - 1] = '\0';
     
-    // Remover a parte dos milissegundos, se existir
+    // Remover a parte dos milissigundos
     char *ms = strstr(data_copia, ".");
     if (ms) *ms = '\0';
     
@@ -197,7 +197,7 @@ void ordenarPorData(Processo processos[], int qtd_processos) {
 
 // Função para exibir os primeiros N processos
 void exibirProcessos(Processo processos[], int qtd_processos, int limite) {
-    printf("ID\t\tNúmero\t\t\tData Ajuizamento\n");
+    printf("ID\t\tNumero\t\t\tData Ajuizamento\n");
     printf("------------------------------------------------------\n");
     int qtd_exibir = (qtd_processos < limite) ? qtd_processos : limite;
     
@@ -222,7 +222,7 @@ int salvarProcessosCSV(Processo processos[], int qtd_processos, const char *nome
     }
     
     // Escrever cabeçalho
-    fprintf(arquivo, "ID,Número,Data Ajuizamento,Classes,Assuntos,Ano Eleição\n");
+    fprintf(arquivo, "ID,Numero,Data Ajuizamento,Classes,Assuntos,Ano Eleicao\n");
     
     // Escrever dados
     for (int i = 0; i < qtd_processos; i++) {
@@ -314,7 +314,7 @@ int identificarAssuntosUnicos(Processo processos[], int qtd_processos, AssuntosU
 // Função para listar processos vinculados a mais de um assunto
 void listarProcessosMultiplosAssuntos(Processo processos[], int qtd_processos) {
     printf("\nProcessos vinculados a mais de um assunto:\n");
-    printf("ID\t\tNúmero\t\t\tData Ajuizamento\t\tAssuntos\n");
+    printf("ID\t\tNumero\t\t\tData Ajuizamento\t\tAssuntos\n");
     printf("----------------------------------------------------------------------\n");
     
     int encontrou = 0;
@@ -337,7 +337,7 @@ void listarProcessosMultiplosAssuntos(Processo processos[], int qtd_processos) {
     }
     
     if (!encontrou) {
-        printf("Nenhum processo encontrado com múltiplos assuntos.\n");
+        printf("Nenhum processo encontrado com multiplos assuntos.\n");
     }
 }
 
@@ -358,13 +358,13 @@ void exibirDiasEmTramitacao(Processo processos[], int qtd_processos, const char 
     for (int i = 0; i < qtd_processos; i++) {
         if (strcmp(processos[i].numero, numero_processo) == 0) {
             int dias = calcularDiasEmTramitacao(processos[i]);
-            printf("O processo %s está em tramitação há %d dias.\n", 
+            printf("O processo %s esta em tramitacao ha %d dias.\n", 
                 numero_processo, dias);
             return;
         }
     }
     
-    printf("Processo não encontrado.\n");
+    printf("Processo nao encontrado.\n");
 }
 
 // Função para liberar a memória alocada
