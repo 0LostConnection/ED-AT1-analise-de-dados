@@ -6,7 +6,6 @@
 
 int main() {
    
-
     Processo processos[MAX_PROCESSOS];
     AssuntosUnicos assuntos = {NULL, 0, 0};
     char nome_arquivo[] = "../data/processo_043_202409032338.csv";
@@ -46,6 +45,14 @@ int main() {
                 printf("\n1. Processos ordenados por ID (crescente):\n");
                 ordenarPorId(processos, qtd_processos);
                 exibirProcessos(processos, qtd_processos, 10);
+                
+                // Salvar em arquivo CSV
+                char nome_arquivo_saida_id[] = "../data/processos_ordenados_id.csv";
+                if (salvarProcessosCSV(processos, qtd_processos, nome_arquivo_saida_id)) {
+                    printf("Resultados salvos em %s\n", nome_arquivo_saida_id);
+                } else {
+                    printf("Erro ao salvar resultados no arquivo.\n");
+                }
                 break;
                 
             case 2:
@@ -53,6 +60,14 @@ int main() {
                 printf("\n2. Processos ordenados por data de ajuizamento (decrescente):\n");
                 ordenarPorData(processos, qtd_processos);
                 exibirProcessos(processos, qtd_processos, 10);
+                
+                // Salvar em arquivo CSV
+                char nome_arquivo_saida_data[] = "../data/processos_ordenados_data.csv";
+                if (salvarProcessosCSV(processos, qtd_processos, nome_arquivo_saida_data)) {
+                    printf("Resultados salvos em %s\n", nome_arquivo_saida_data);
+                } else {
+                    printf("Erro ao salvar resultados no arquivo.\n");
+                }
                 break;
                 
             case 3:

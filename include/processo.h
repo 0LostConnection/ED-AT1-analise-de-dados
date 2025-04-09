@@ -47,6 +47,9 @@ void ordenarPorData(Processo processos[], int qtd_processos);
 // Função para exibir processos
 void exibirProcessos(Processo processos[], int qtd_processos, int limite);
 
+// Função para salvar processos em arquivo CSV
+int salvarProcessosCSV(Processo processos[], int qtd_processos, const char *nome_arquivo);
+
 // Função para contar processos por classe
 int contarProcessosPorClasse(Processo processos[], int qtd_processos, int id_classe);
 

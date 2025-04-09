@@ -213,6 +213,49 @@ void exibirProcessos(Processo processos[], int qtd_processos, int limite) {
     }
 }
 
+// Função para salvar processos em arquivo CSV
+int salvarProcessosCSV(Processo processos[], int qtd_processos, const char *nome_arquivo) {
+    FILE *arquivo = fopen(nome_arquivo, "w");
+    if (!arquivo) {
+        printf("Erro ao criar o arquivo %s\n", nome_arquivo);
+        return 0;
+    }
+    
+    // Escrever cabeçalho
+    fprintf(arquivo, "ID,Número,Data Ajuizamento,Classes,Assuntos,Ano Eleição\n");
+    
+    // Escrever dados
+    for (int i = 0; i < qtd_processos; i++) {
+        // Escrever ID, número e data
+        fprintf(arquivo, "%lld,%s,%s,", 
+                processos[i].id, 
+                processos[i].numero, 
+                processos[i].data_ajuizamento);
+        
+        // Escrever classes
+        fprintf(arquivo, "{");
+        for (int j = 0; j < processos[i].num_classes; j++) {
+            fprintf(arquivo, "%d", processos[i].id_classes[j]);
+            if (j < processos[i].num_classes - 1) fprintf(arquivo, ",");
+        }
+        fprintf(arquivo, "},");
+        
+        // Escrever assuntos
+        fprintf(arquivo, "{");
+        for (int j = 0; j < processos[i].num_assuntos; j++) {
+            fprintf(arquivo, "%d", processos[i].id_assuntos[j]);
+            if (j < processos[i].num_assuntos - 1) fprintf(arquivo, ",");
+        }
+        fprintf(arquivo, "},");
+        
+        // Escrever ano eleição
+        fprintf(arquivo, "%d\n", processos[i].ano_eleicao);
+    }
+    
+    fclose(arquivo);
+    return 1;
+}
+
 // Função para contar processos vinculados a um determinado id_classe
 int contarProcessosPorClasse(Processo processos[], int qtd_processos, int id_classe) {
     int contador = 0;
@@ -240,7 +283,7 @@ void adicionarAssuntoUnico(AssuntosUnicos *assuntos, int id_assunto) {
     
     // Verificar se precisa expandir o array
     if (assuntos->contador >= assuntos->capacidade) {
-        assuntos->capacidade *= 2;
+        assuntos->capacidade = (assuntos->capacidade == 0) ? MAX_ASSUNTOS : assuntos->capacidade * 2;
         assuntos->ids = (int*)realloc(assuntos->ids, assuntos->capacidade * sizeof(int));
     }
     
@@ -250,6 +293,11 @@ void adicionarAssuntoUnico(AssuntosUnicos *assuntos, int id_assunto) {
 
 // Função para identificar quantos id_assuntos únicos existem
 int identificarAssuntosUnicos(Processo processos[], int qtd_processos, AssuntosUnicos *assuntos) {
+    // Liberar memória antiga se existir
+    if (assuntos->ids != NULL) {
+        free(assuntos->ids);
+    }
+    
     assuntos->contador = 0;
     assuntos->capacidade = MAX_ASSUNTOS;
     assuntos->ids = (int*)malloc(assuntos->capacidade * sizeof(int));
