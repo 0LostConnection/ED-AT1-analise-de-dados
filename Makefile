@@ -37,7 +37,6 @@ clean:
 cleanall: clean
 	@del /Q $(BIN_DIR)\programa.exe
 	@echo Executável removido.
-
 # Regra para recompilar tudo
 rebuild: cleanall all
 
