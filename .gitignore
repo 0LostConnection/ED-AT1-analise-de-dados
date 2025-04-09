@@ -1,5 +1,4 @@
 # Ignora os arquivos .o
-
-
 src/*.o
 src/**/*.o
+
