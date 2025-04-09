@@ -2,3 +2,5 @@
 src/*.o
 src/**/*.o
 
+# Ignora a pasta .vscode
+.vscode/ 
