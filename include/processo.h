@@ -1,6 +1,11 @@
 #ifndef PROCESSO_H
 #define PROCESSO_H
 
+// Compatibilidade com linux
+#ifdef __linux__
+    #define _strdup strdup
+#endif
+
 #include <time.h>
 
 // Constantes

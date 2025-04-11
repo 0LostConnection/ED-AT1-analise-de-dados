@@ -4,3 +4,7 @@ src/**/*.o
 
 # Ignora a pasta .vscode
 .vscode/ 
+
+# Ignora os executáveis compilados
+*.exe
+*.out
