@@ -133,96 +133,68 @@ int lerDados(const char *nome_arquivo, Processo processos[])
     char linha[MAX_LINE];
     int contador = 0;
 
-    // Pular a linha de cabeçalho
+    // Pular cabeçalho
     fgets(linha, MAX_LINE, arquivo);
 
     while (fgets(linha, MAX_LINE, arquivo) && contador < MAX_PROCESSOS)
     {
-        // Remover quebra de linha
         linha[strcspn(linha, "\n")] = 0;
 
-        // Parsing da linha CSV
-        char *token;
         char *resto = linha;
+        char *token;
 
         // ID
         token = meu_strsep(&resto, ",");
+        if (!token) continue;
         processos[contador].id = atoll(token);
 
         // Número
         token = meu_strsep(&resto, ",");
-        // Remover aspas do número
-        if (token[0] == '"')
-        {
-            // Copia sem a primeira aspas
-            strncpy(processos[contador].numero, token + 1, sizeof(processos[contador].numero) - 1);
-            // Remove a última aspas
-            int len = strlen(processos[contador].numero);
-            if (len > 0 && processos[contador].numero[len - 1] == '"')
-            {
-                processos[contador].numero[len - 1] = '\0';
-            }
+        if (!token) continue;
+        if (token[0] == '"') {
+            token++;
+            token[strlen(token)-1] = '\0';
         }
-        else
-        {
-            strncpy(processos[contador].numero, token, sizeof(processos[contador].numero) - 1);
-        }
-        processos[contador].numero[sizeof(processos[contador].numero) - 1] = '\0';
+        strncpy(processos[contador].numero, token, sizeof(processos[contador].numero)-1);
+        processos[contador].numero[sizeof(processos[contador].numero)-1] = '\0';
 
         // Data de ajuizamento
         token = meu_strsep(&resto, ",");
-        strncpy(processos[contador].data_ajuizamento, token, sizeof(processos[contador].data_ajuizamento) - 1);
-        processos[contador].data_ajuizamento[sizeof(processos[contador].data_ajuizamento) - 1] = '\0';
+        if (!token) continue;
+        strncpy(processos[contador].data_ajuizamento, token, sizeof(processos[contador].data_ajuizamento)-1);
+        processos[contador].data_ajuizamento[sizeof(processos[contador].data_ajuizamento)-1] = '\0';
         processos[contador].timestamp = converterData(token);
 
-        // Classes
-        char classes_str[MAX_LINE] = "";
-        int pos = 0;
-        int dentro_chaves = 0;
+        // id_classe
+        token = meu_strsep(&resto, ",");
+        if (!token) continue;
+        processos[contador].id_classes = extrairNumeros(token, &processos[contador].num_classes);
 
-        while (*resto)
-        {
-            if (*resto == '{')
-                dentro_chaves = 1;
-            else if (*resto == '}')
-                dentro_chaves = 0;
+        // id_assunto (campo que exige tratamento especial)
+        if (resto[0] == '"') { // começa com aspas, tem múltiplos assuntos
+            resto++; // pula a primeira aspas
+            token = resto;
 
-            if (*resto == ',' && !dentro_chaves)
-                break;
-            classes_str[pos++] = *resto;
-            resto++;
+            char *fim = strstr(resto, "\"");
+            if (!fim) continue; // aspas não fechadas corretamente
+            *fim = '\0'; // finaliza token corretamente
+
+            resto = fim + 2; // pula aspas e a vírgula seguinte
+        } else {
+            token = meu_strsep(&resto, ",");
         }
-        classes_str[pos] = '\0';
-        if (*resto == ',')
-            resto++;
 
-        processos[contador].id_classes = extrairNumeros(classes_str, &processos[contador].num_classes);
+        if (!token) continue;
+        processos[contador].id_assuntos = extrairNumeros(token, &processos[contador].num_assuntos);
 
-        // Assuntos
-        char assuntos_str[MAX_LINE] = "";
-        pos = 0;
-        dentro_chaves = 0;
-
-        while (*resto)
-        {
-            if (*resto == '{')
-                dentro_chaves = 1;
-            else if (*resto == '}')
-                dentro_chaves = 0;
-
-            if (*resto == ',' && !dentro_chaves)
-                break;
-            assuntos_str[pos++] = *resto;
-            resto++;
+        // ano_eleicao
+        if (resto) {
+            token = meu_strsep(&resto, ",");
+            if (!token) continue;
+            processos[contador].ano_eleicao = atoi(token);
+        } else {
+            processos[contador].ano_eleicao = 0;
         }
-        assuntos_str[pos] = '\0';
-        if (*resto == ',')
-            resto++;
-
-        processos[contador].id_assuntos = extrairNumeros(assuntos_str, &processos[contador].num_assuntos);
-
-        // Ano eleição
-        processos[contador].ano_eleicao = atoi(resto);
 
         contador++;
     }

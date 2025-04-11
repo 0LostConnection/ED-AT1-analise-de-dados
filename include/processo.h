@@ -9,8 +9,8 @@
 #include <time.h>
 
 // Constantes
-#define MAX_LINE 1024
-#define MAX_ASSUNTOS 50
+#define MAX_LINE 2048
+#define MAX_ASSUNTOS 200
 #define MAX_PROCESSOS 20000
 #define DATE_FORMAT "%Y-%m-%d %H:%M:%S"
 
