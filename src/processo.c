@@ -252,10 +252,10 @@ void exibirProcessos(Processo processos[], int qtd_processos, int limite)
 
     for (int i = 0; i < qtd_exibir; i++)
     {
-        printf("%lld\t%s\t%s\n",
-               processos[i].id,
-               processos[i].numero,
-               processos[i].data_ajuizamento);
+        printf("%lld\t%s\t%s\n", 
+            (long long)processos[i].id, 
+            processos[i].numero, 
+            processos[i].data_ajuizamento);
     }
 
     if (qtd_processos > limite)
@@ -282,9 +282,9 @@ int salvarProcessosCSV(Processo processos[], int qtd_processos, const char *nome
     {
         // Escrever ID, número e data
         fprintf(arquivo, "%lld,%s,%s,",
-                processos[i].id,
-                processos[i].numero,
-                processos[i].data_ajuizamento);
+             (long long)processos[i].id,
+              processos[i].numero, 
+              processos[i].data_ajuizamento);
 
         // Escrever classes
         fprintf(arquivo, "{");
@@ -395,11 +395,12 @@ void listarProcessosMultiplosAssuntos(Processo processos[], int qtd_processos)
         if (processos[i].num_assuntos > 1)
         {
             encontrou = 1;
-            printf("%lld\t%s\t%s\t{",
-                   processos[i].id,
-                   processos[i].numero,
-                   processos[i].data_ajuizamento);
 
+            printf("%lld\t%s\t%s\t{",
+                 (long long)processos[i].id,
+                  processos[i].numero,
+                   processos[i].data_ajuizamento);
+                   
             for (int j = 0; j < processos[i].num_assuntos; j++)
             {
                 printf("%d", processos[i].id_assuntos[j]);

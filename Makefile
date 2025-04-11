@@ -1,6 +1,6 @@
 # Definição de variáveis
 CC = gcc
-CFLAGS = -Wall -I./include
+CFLAGS = -I./include
 SRC_DIR = src
 INC_DIR = include
 BIN_DIR = bin
