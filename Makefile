@@ -17,8 +17,8 @@ ifeq ($(OS),Windows_NT)
 else
     RM = rm -f
     MKDIR = mkdir -p
-    TARGET = $(BIN_DIR)/programa
-    EXECUTABLE = programa
+    TARGET = $(BIN_DIR)/programa.out
+    EXECUTABLE = programa.out
 endif
 
 # Arquivos de origem
