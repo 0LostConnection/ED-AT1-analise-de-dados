@@ -206,13 +206,38 @@ int lerDados(const char *nome_arquivo, Processo processos[])
 // Função para ordenar processos por ID (crescente)
 void ordenarPorId(Processo processos[], int qtd_processos)
 {
-    qsort(processos, qtd_processos, sizeof(Processo), compararPorId);
+    for (int i = 0; i < qtd_processos - 1; i++)
+    {
+        for (int j = 0; j < qtd_processos - i - 1; j++)
+        {
+            if (processos[j].id > processos[j + 1].id)
+            {
+                // Trocar processos
+                Processo temp = processos[j];
+                processos[j] = processos[j + 1];
+                processos[j + 1] = temp;
+            }
+        }
+    }
 }
+
 
 // Função para ordenar processos por data de ajuizamento (decrescente)
 void ordenarPorData(Processo processos[], int qtd_processos)
 {
-    qsort(processos, qtd_processos, sizeof(Processo), compararPorData);
+    for (int i = 0; i < qtd_processos - 1; i++)
+    {
+        for (int j = 0; j < qtd_processos - i - 1; j++)
+        {
+            if (processos[j].timestamp < processos[j + 1].timestamp)
+            {
+                // Trocar processos
+                Processo temp = processos[j];
+                processos[j] = processos[j + 1];
+                processos[j + 1] = temp;
+            }
+        }
+    }
 }
 
 // Função para exibir os primeiros N processos
